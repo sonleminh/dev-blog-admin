@@ -1,11 +1,12 @@
+import { Navigate } from 'react-router-dom';
 import AdminLayout from '../layouts/AdminLayout';
 import BaseLayout from '../layouts/BaseLayout';
-import Category from '../pages/Article';
-import Article from '../pages/Category';
-import Homepage from '../pages/Homepage';
+import Category from '../pages/Category';
+import Article from '../pages/Article';
 import Login from '../pages/Login';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
+import Dashboard from '../pages/Dashboard';
 
 const routes = [
   {
@@ -31,7 +32,11 @@ const routes = [
         children: [
           {
             path: '/',
-            element: <Homepage />,
+            element: <Navigate to={'/dashboard'} replace />,
+          },
+          {
+            path: 'dashboard',
+            element: <Dashboard />,
           },
           {
             path: 'article',

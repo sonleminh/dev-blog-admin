@@ -1,4 +1,4 @@
-import { colors, createTheme } from "@mui/material";
+import { createTheme } from "@mui/material";
 
 export const theme = ()=> createTheme({
     palette: {
@@ -7,6 +7,9 @@ export const theme = ()=> createTheme({
             light: '#fff'
         },
     },
+    typography: {
+        fontFamily: '"Inter"'
+    }
     // components: {
     //       MuiMenuItem: {
     //         styleOverrides: {

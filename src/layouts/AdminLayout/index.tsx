@@ -1,16 +1,17 @@
-import React from 'react';
 import Sidebar from './Sidebar';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
+import Header from './Header';
 
 const AdminLayout = () => {
   return (
-    <div>
+    <>
+      <Header />
       <Sidebar />
-      <Box sx={{ ml: '290px', bgcolor: (theme) => theme.palette.primary.main }}>
+      <Box sx={{ ml: '260px' }}>
         <Outlet />
       </Box>
-    </div>
+    </>
   );
 };
 

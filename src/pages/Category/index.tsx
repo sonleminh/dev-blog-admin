@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Article = () => {
-  return <div>Article</div>;
+const Category = () => {
+  return <div>Category</div>;
 };
 
-export default Article;
+export default Category;
