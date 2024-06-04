@@ -7,6 +7,20 @@ export const theme = ()=> createTheme({
             light: '#fff'
         },
     },
+    components: {
+        MuiButtonBase: {
+            styleOverrides: {
+                root: {
+                    '&.MuiButton-contained': {
+                        '&:hover': {
+                        backgroundColor: 'rgba(0,0,0,0.8)'
+                        }
+                    }
+                }
+            }
+        }
+    }
+   ,
     typography: {
         fontFamily: '"Inter"'
     }
