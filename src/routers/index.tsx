@@ -3,10 +3,10 @@ import AdminLayout from '../layouts/AdminLayout';
 import BaseLayout from '../layouts/BaseLayout';
 import Category from '../pages/Category';
 import Article from '../pages/Article';
-import Login from '../pages/Login';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import Dashboard from '../pages/Dashboard';
+import SignIn from '../pages/SignIn';
 
 const routes = [
   {
@@ -16,8 +16,8 @@ const routes = [
         element: <BaseLayout />,
         children: [
           {
-            path: 'login',
-            element: <Login />,
+            path: 'signin',
+            element: <SignIn />,
             children: [],
           },
         ],

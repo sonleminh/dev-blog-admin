@@ -10,8 +10,16 @@ import {
 import React from 'react';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import LockIcon from '@mui/icons-material/Lock';
+import { useSignInMutate } from '../../services/auth';
 
-const Login = () => {
+const SignIn = () => {
+  const signInMutation = useSignInMutate();
+
+  console.log(2, process.env.REACT_APP_HOST);
+
+  const handleSignIn = () => {
+    signInMutation.mutate({ username: 'admin', password: 'admin' });
+  };
   return (
     <Box
       sx={{
@@ -75,7 +83,11 @@ const Login = () => {
               sx={{ mt: 6, borderRadius: 4 }}
             />
           </FormControl>
-          <Button variant='contained' fullWidth sx={{ height: 48, mt: 3 }}>
+          <Button
+            variant='contained'
+            fullWidth
+            sx={{ height: 48, mt: 3 }}
+            onClick={handleSignIn}>
             Đăng nhập
           </Button>
         </Box>
@@ -84,4 +96,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;

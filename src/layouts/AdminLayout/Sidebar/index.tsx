@@ -35,7 +35,7 @@ const Sidebar = () => {
       }}>
       <Box
         sx={{
-          width: 130,
+          width: 140,
           m: '28px auto',
           border: '1px solid #fff',
           borderRadius: 2,
