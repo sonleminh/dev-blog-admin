@@ -1,3 +1,5 @@
+import LockIcon from '@mui/icons-material/Lock';
+import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import {
   Box,
   Button,
@@ -7,18 +9,35 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
-import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
-import LockIcon from '@mui/icons-material/Lock';
+import { useFormik } from 'formik';
+import { ChangeEvent, useState } from 'react';
+import * as yup from 'yup';
 import { useSignInMutate } from '../../services/auth';
+const schema = yup.object({
+  username: yup
+    .string()
+    .required('Trường này không được để trống!')
+    .max(50, 'Không được quá 50 ký tự!'),
+  password: yup.string().required('Trường này không được để trống!'),
+});
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const SignIn = () => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const signInMutation = useSignInMutate();
 
-  console.log(2, process.env.REACT_APP_HOST);
-
-  const handleSignIn = () => {
-    signInMutation.mutate({ username: 'admin', password: 'admin' });
+  const formik = useFormik({
+    initialValues: { username: '', password: '' },
+    validationSchema: schema,
+    validateOnChange: false,
+    onSubmit(values) {
+      signInMutation.mutate(values);
+    },
+  });
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    formik.setFieldValue(name, value);
   };
   return (
     <Box
@@ -42,15 +61,14 @@ const SignIn = () => {
           Quản trị viên
         </Typography>
         <Box width={'100%'}>
-          <FormControl fullWidth variant='standard'>
+          <FormControl fullWidth variant='standard' sx={{ maxHeight: 100 }}>
             <InputLabel>Tài khoản</InputLabel>
             <TextField
               variant='outlined'
+              size='small'
               fullWidth
               name='username'
-              // onChange={handleChangeValue}
-              // helperText={formik.errors.username}
-              placeholder='username@gmail.vn'
+              placeholder='username@gmail.com'
               autoFocus
               InputProps={{
                 startAdornment: (
@@ -59,6 +77,14 @@ const SignIn = () => {
                   </InputAdornment>
                 ),
               }}
+              helperText={
+                <Typography
+                  component={'span'}
+                  sx={{ fontSize: 13, color: 'red' }}>
+                  {formik.errors.username}
+                </Typography>
+              }
+              onChange={handleChange}
               sx={{ mt: 6, borderRadius: 4 }}
             />
           </FormControl>
@@ -66,20 +92,53 @@ const SignIn = () => {
             <InputLabel>Mật khẩu</InputLabel>
             <TextField
               variant='outlined'
+              size='small'
               fullWidth
-              type='password'
+              type={showPassword ? 'text' : 'password'}
               name='password'
-              // onChange={handleChangeValue}
-              // helperText={formik.errors.username}
               placeholder='*******'
               autoFocus
+              helperText={
+                <Typography
+                  component={'span'}
+                  sx={{ fontSize: 13, color: 'red' }}>
+                  {formik.errors.password}
+                </Typography>
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
-                    <LockIcon />
+                    <LockIcon sx={{ fontSize: 20 }} />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position='start'>
+                    {formik.values.password ? (
+                      <Box
+                        onClick={() => setShowPassword(!showPassword)}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          cursor: 'pointer',
+                        }}>
+                        {showPassword ? (
+                          <Visibility sx={{ fontSize: 20 }} />
+                        ) : (
+                          <VisibilityOff sx={{ fontSize: 20 }} />
+                        )}
+                      </Box>
+                    ) : (
+                      <></>
+                    )}
                   </InputAdornment>
                 ),
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  formik.handleSubmit();
+                }
+              }}
+              onChange={handleChange}
               sx={{ mt: 6, borderRadius: 4 }}
             />
           </FormControl>
@@ -87,7 +146,8 @@ const SignIn = () => {
             variant='contained'
             fullWidth
             sx={{ height: 48, mt: 3 }}
-            onClick={handleSignIn}>
+            disabled={!formik.values.username && !formik.values.password}
+            onClick={() => formik.handleSubmit()}>
             Đăng nhập
           </Button>
         </Box>

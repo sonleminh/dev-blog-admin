@@ -9,8 +9,7 @@ export const privateInstance = axios.create({
 
 privateInstance.interceptors.request.use(
     (config) => {
-  console.log('env:',import.meta.env.VITE_APP_HOST)
-        const accessToken = Cookies.get('ACCESSTOKEN');
+        const accessToken = Cookies.get('ACCESS_TOKEN');
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`
         }
