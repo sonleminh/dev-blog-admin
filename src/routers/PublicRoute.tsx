@@ -6,12 +6,13 @@ import { useEffect } from 'react';
 const PublicRoute = () => {
   const navigate = useNavigate();
   const auth = useAuthContext();
-  const { data, isFetching } = useWhoAmI();
+  const { data, isFetching, refetch } = useWhoAmI();
   console.log('data:', data);
 
   useEffect(() => {
     if (!isFetching) {
       if (data) {
+        console.log('public_data:', data);
         navigate('dashboard');
       }
     }

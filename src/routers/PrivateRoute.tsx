@@ -7,16 +7,17 @@ const PrivateRoute = () => {
   const navigate = useNavigate();
   const auth = useAuthContext();
   const { data, isFetching } = useWhoAmI();
-
+  // console.log('data:', data);
   useEffect(() => {
     if (!isFetching) {
       if (data) {
+        console.log('prv_data:', data);
         auth?.signIn(data);
       } else {
-        navigate('/login');
+        navigate('/signin');
       }
     }
-  }, []);
+  }, [data, isFetching]);
   return auth?.user ? <Outlet></Outlet> : <>Loading ...</>;
 };
 

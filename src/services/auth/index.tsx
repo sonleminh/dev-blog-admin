@@ -29,8 +29,8 @@ export const useSignInMutate = () => {
   });
 };
 
-const whoAmI = () => {
-  return getRequest<IUser>(`${authUrl}/profile`)
+const whoAmI = async () => {
+  return await getRequest<IUser>(`${authUrl}/profile`)
     .then((res) => {
       return res.data;
     })
@@ -45,8 +45,9 @@ export const useWhoAmI = () => {
   return useQuery({
     queryKey: ['tai-khoan'],
     queryFn: whoAmI,
-    refetchOnWindowFocus: false,
+    // refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchInterval: false,
+    gcTime: 0,
   });
 };
