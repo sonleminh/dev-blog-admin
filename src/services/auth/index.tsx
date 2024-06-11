@@ -17,7 +17,7 @@ export const useSignInMutate = () => {
   const navigate = useNavigate();
   const auth = useAuthContext();
   return useMutation({
-    mutationKey: ['tai-khoan'],
+    mutationKey: ['user'],
     mutationFn: signInApi,
     onSuccess: (data) => {
       const { accessToken, ...user } = data.user;
@@ -43,11 +43,12 @@ const whoAmI = async () => {
 
 export const useWhoAmI = () => {
   return useQuery({
-    queryKey: ['tai-khoan'],
+    queryKey: ['user'],
     queryFn: whoAmI,
-    // refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    // refetchOnMount: false,
+    // refetchInterval: false,
+    retry: 0,
     gcTime: 0,
   });
 };

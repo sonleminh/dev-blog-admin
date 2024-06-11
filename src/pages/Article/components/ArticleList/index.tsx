@@ -15,8 +15,14 @@ import {
 import React from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Image from '../../../../components/common/Image';
+import { useGetArticleList } from '../../../../services/article';
+import { useQueryClient } from '@tanstack/react-query';
 
 const ArticleList = () => {
+  const queryClient = useQueryClient();
+  queryClient.invalidateQueries({ queryKey: ['article'] });
+  const { data } = useGetArticleList();
+  console.log(data?.articleList);
   return (
     <Card sx={{ mt: 3, borderRadius: 2 }}>
       <CardHeader
@@ -47,10 +53,10 @@ const ArticleList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
+            {data?.articleList?.map((item, index) => (
               <TableRow key={index}>
-                <TableCell>1</TableCell>
-                <TableCell>Dev blog</TableCell>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{item.title}</TableCell>
                 <TableCell>
                   <Box
                     sx={{
