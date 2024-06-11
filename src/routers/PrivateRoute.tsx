@@ -6,11 +6,11 @@ import { useEffect } from 'react';
 const PrivateRoute = () => {
   const navigate = useNavigate();
   const auth = useAuthContext();
-  const { data, isFetching } = useWhoAmI();
+  const { data, isFetching, isError } = useWhoAmI();
   // console.log('data:', data);
   useEffect(() => {
     if (!isFetching) {
-      if (data) {
+      if (data && !isError) {
         console.log('prv_data:', data);
         auth?.signIn(data);
       } else {

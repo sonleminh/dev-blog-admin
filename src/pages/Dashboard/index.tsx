@@ -1,10 +1,8 @@
-import React from 'react';
-import { useWhoAmI } from '../../services/auth';
-import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useGetArticleList } from '../../services/article';
-import { useQueryClient } from '@tanstack/react-query';
 
 const Dashboard = () => {
   const queryClient = useQueryClient();
@@ -13,7 +11,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   // const { data } = useWhoAmI();
   const { data } = useGetArticleList();
-  console.log('data:', data);
   return (
     <div>
       Dashboard{' '}

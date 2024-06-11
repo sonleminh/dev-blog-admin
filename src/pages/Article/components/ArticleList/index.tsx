@@ -1,3 +1,4 @@
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {
   Box,
   Button,
@@ -12,17 +13,13 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import React from 'react';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Image from '../../../../components/common/Image';
-import { useGetArticleList } from '../../../../services/article';
 import { useQueryClient } from '@tanstack/react-query';
+import { useGetArticleList } from '../../../../services/article';
 
 const ArticleList = () => {
   const queryClient = useQueryClient();
   queryClient.invalidateQueries({ queryKey: ['article'] });
   const { data } = useGetArticleList();
-  console.log(data?.articleList);
   return (
     <Card sx={{ mt: 3, borderRadius: 2 }}>
       <CardHeader

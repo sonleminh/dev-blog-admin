@@ -50,5 +50,6 @@ export const useWhoAmI = () => {
     // refetchInterval: false,
     retry: 0,
     gcTime: 0,
+    // throwOnError: ,
   });
 };
