@@ -1,4 +1,3 @@
-import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import ArticleLayout from './components/ArticleLayout';
 import ArticleList from './components/ArticleList';
@@ -16,11 +15,11 @@ const Article = () => {
           index: true,
         },
         {
-          path: '/edit/:id',
-          element: <ArticleList />,
+          path: '/update/:id',
+          element: <ArticleUpsert />,
         },
         {
-          path: '/edit',
+          path: '/create',
           element: <ArticleUpsert />,
         },
       ],

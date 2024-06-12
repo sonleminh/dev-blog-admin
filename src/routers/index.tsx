@@ -1,12 +1,25 @@
 import { Navigate } from 'react-router-dom';
 import AdminLayout from '../layouts/AdminLayout';
 import BaseLayout from '../layouts/BaseLayout';
-import Category from '../pages/Category';
-import Article from '../pages/Article';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
-import Dashboard from '../pages/Dashboard';
-import SignIn from '../pages/SignIn';
+// import SignIn from '../pages/SignIn';
+import { Suspense, lazy } from 'react';
+import SuspenseLoader from '../components/SuspenseLoader';
+
+const Loader =
+  <P extends object>(Component: React.ComponentType<P>): React.FC<P> =>
+  (props: P) =>
+    (
+      <Suspense fallback={<SuspenseLoader />}>
+        <Component {...props} />
+      </Suspense>
+    );
+
+const SignIn = Loader(lazy(() => import('../pages/SignIn')));
+const Dashboard = Loader(lazy(() => import('../pages/Dashboard')));
+const Article = Loader(lazy(() => import('../pages/Article')));
+const Category = Loader(lazy(() => import('../pages/Category')));
 
 const routes = [
   {
@@ -18,7 +31,6 @@ const routes = [
           {
             path: 'signin',
             element: <SignIn />,
-            children: [],
           },
         ],
       },
@@ -39,11 +51,11 @@ const routes = [
             element: <Dashboard />,
           },
           {
-            path: 'article',
+            path: 'article/*',
             element: <Article />,
           },
           {
-            path: 'category',
+            path: 'category/*',
             element: <Category />,
           },
         ],

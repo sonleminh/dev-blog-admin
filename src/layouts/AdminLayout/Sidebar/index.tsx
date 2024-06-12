@@ -1,4 +1,4 @@
-import HeaderLogo from '../../../components/sharing/header/HeaderLogo';
+import HeaderLogo from '../../../components/Header/HeaderLogo';
 import { Box, Button, Divider, List, ListItem } from '@mui/material';
 import ArticleIcon from '@mui/icons-material/Article';
 import ListAltIcon from '@mui/icons-material/ListAlt';
