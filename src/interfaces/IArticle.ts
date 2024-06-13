@@ -3,6 +3,12 @@ export interface IArticle {
     title: string;
     summary: string;
     content: string;
-    id_slug: string;
-    id_category: string;
+    category: string;
+}
+
+export interface ICreateArticle {
+    title: string;
+    summary: string;
+    content: string;
+    category: string;
 }

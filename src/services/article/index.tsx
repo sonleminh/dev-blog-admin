@@ -1,12 +1,14 @@
 // Get articles list
 
-import { useQuery } from '@tanstack/react-query';
-import { getRequest } from '../axios';
-import { IArticle } from '../../interfaces/IArticle';
+import { MutateOptions, useMutation, useQuery } from '@tanstack/react-query';
+import { getRequest, postRequest } from '../axios';
+import { IArticle, ICreateArticle } from '../../interfaces/IArticle';
 
 type TArticleRes = {
   articleList: IArticle[];
 };
+
+type useMutateOptions = Omit<MutateOptions<createArticle>, 'mutationFn'>;
 
 const articleUrl = '/article';
 
@@ -22,5 +24,17 @@ export const useGetArticleList = () => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchInterval: false,
+  });
+};
+
+const createArticle = async (payload: ICreateArticle) => {
+  const result = await postRequest(`${articleUrl}`, payload);
+  return result.data as TArticleRes;
+};
+
+export const useCreateArticle = (options: useMutateOptions) => {
+  return useMutation({
+    ...options,
+    mutationFn: createArticle,
   });
 };
