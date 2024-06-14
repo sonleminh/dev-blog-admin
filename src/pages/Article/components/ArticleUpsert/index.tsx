@@ -23,7 +23,15 @@ const ArticleUpsert = () => {
   const queryClient = useQueryClient();
 
   const isEdit = !!id;
-  const mutation = useCreateArticle();
+  const mutation = useCreateArticle({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['article'] });
+      navigate('/article');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -31,10 +39,9 @@ const ArticleUpsert = () => {
       summary: '',
       content: '',
       thumbnail_image: '',
-      category: '',
+      id_category: '',
     },
     onSubmit(values) {
-      console.log(values);
       mutation.mutate(values);
     },
   });
@@ -68,9 +75,9 @@ const ArticleUpsert = () => {
         </FormControl>
         <FormControl>
           <Input
-            id='category'
+            id='id_category'
             label='Danh mục'
-            name='category'
+            name='id_category'
             variant='filled'
             required
             onChange={handleChangeValue}

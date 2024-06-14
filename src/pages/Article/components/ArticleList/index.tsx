@@ -66,10 +66,7 @@ const ArticleList = () => {
                         width: 100,
                       },
                     }}>
-                    <img
-                      src='https://people.com/thmb/n6EdTmvAL3TkkAqrT47caD6tUu8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():focal(723x121:725x123)/wisp-the-cat-from-tiktok-092823-1-74797b02afe7475295e1478b2cdf2883.jpg'
-                      className='thumbnail'
-                    />
+                    <img src={item.thumbnail_image} className='thumbnail' />
                   </Box>
                 </TableCell>
                 <TableCell>1</TableCell>

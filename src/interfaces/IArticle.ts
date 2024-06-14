@@ -3,12 +3,13 @@ export interface IArticle {
     title: string;
     summary: string;
     content: string;
-    category: string;
+    id_category: string;
+    thumbnail_image: string
 }
 
-export interface ICreateArticle {
+export interface ICreateArticle extends Record<string, unknown> {
     title: string;
     summary: string;
     content: string;
-    category: string;
+    id_category: string;
 }

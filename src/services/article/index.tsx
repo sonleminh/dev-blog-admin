@@ -1,20 +1,28 @@
 // Get articles list
 
-import { MutateOptions, useMutation, useQuery } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  UseMutationOptions,
+} from '@tanstack/react-query';
 import { getRequest, postRequest } from '../axios';
 import { IArticle, ICreateArticle } from '../../interfaces/IArticle';
+import { createFormData } from '@/utils/createFormdata';
 
-type TArticleRes = {
+type TArticlesRes = {
   articleList: IArticle[];
 };
 
-type useMutateOptions = Omit<MutateOptions<createArticle>, 'mutationFn'>;
+type ArticleMutateOptions = Omit<
+  UseMutationOptions<IArticle, Error, ICreateArticle, unknown>,
+  'mutationFn'
+>;
 
 const articleUrl = '/article';
 
 const getArticleList = async () => {
   const result = await getRequest(`${articleUrl}`);
-  return result.data as TArticleRes;
+  return result.data as TArticlesRes;
 };
 
 export const useGetArticleList = () => {
@@ -28,11 +36,16 @@ export const useGetArticleList = () => {
 };
 
 const createArticle = async (payload: ICreateArticle) => {
-  const result = await postRequest(`${articleUrl}`, payload);
-  return result.data as TArticleRes;
+  const formData = createFormData(payload);
+  const result = await postRequest(`${articleUrl}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return result.data as IArticle;
 };
 
-export const useCreateArticle = (options: useMutateOptions) => {
+export const useCreateArticle = (options: ArticleMutateOptions) => {
   return useMutation({
     ...options,
     mutationFn: createArticle,
