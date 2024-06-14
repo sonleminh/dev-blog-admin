@@ -25,7 +25,14 @@ export const theme = ()=> createTheme({
                     minHeight: 48,
                 }
             }
-        }
+        },
+        // MuiFilledInput: {
+        //     styleOverrides: {
+        //         root: {
+        //             minHeight: 48,
+        //         }
+        //     }
+        // }
     }
    ,
     typography: {

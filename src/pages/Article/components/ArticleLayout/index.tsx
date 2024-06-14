@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import { Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ const ArticleLayout = () => {
       <Container maxWidth='lg'>
         <Outlet />
       </Container>
+      <Footer />
     </>
   );
 };

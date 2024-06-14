@@ -1,9 +1,9 @@
 // Get articles list
 
 import {
+  UseMutationOptions,
   useMutation,
   useQuery,
-  UseMutationOptions,
 } from '@tanstack/react-query';
 import { getRequest, postRequest } from '../axios';
 import { IArticle, ICreateArticle } from '../../interfaces/IArticle';
@@ -30,8 +30,22 @@ export const useGetArticleList = () => {
     queryKey: ['article'],
     queryFn: getArticleList,
     refetchOnWindowFocus: false,
-    refetchOnMount: false,
     refetchInterval: false,
+  });
+};
+
+const getArticleById = async (id: string) => {
+  const result = await getRequest(`${articleUrl}/${id}`);
+  return result.data as IArticle;
+};
+
+export const useGetArticleById = (id: string) => {
+  return useQuery({
+    queryKey: ['article', id],
+    queryFn: () => getArticleById(id),
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    enabled: !!id,
   });
 };
 

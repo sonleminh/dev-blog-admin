@@ -13,16 +13,13 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
-import { useGetArticleList } from '../../../../services/article';
+import { useNavigate } from 'react-router-dom';
 import ActionButton from '../../../../components/ActionButton';
 import ButtonWithTooltip from '../../../../components/ButtonWithTooltip';
-import { useNavigate } from 'react-router-dom';
+import { useGetArticleList } from '../../../../services/article';
 
 const ArticleList = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  queryClient.invalidateQueries({ queryKey: ['article'] });
   const { data } = useGetArticleList();
   return (
     <Card sx={{ mt: 3, borderRadius: 2 }}>
@@ -64,6 +61,8 @@ const ArticleList = () => {
                     sx={{
                       '.thumbnail': {
                         width: 100,
+                        height: 100,
+                        objectFit: 'contain',
                       },
                     }}>
                     <img src={item.thumbnail_image} className='thumbnail' />

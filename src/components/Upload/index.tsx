@@ -7,14 +7,15 @@ type TUploadProps = {
   title?: ReactNode;
   required?: boolean;
   onClearValue?: () => void;
-  allowClearValue?: boolean;
 } & TextFieldProps;
 
 const Upload = ({
   title,
   required,
   disabled,
+  value,
   onChange,
+  onClearValue,
   helperText,
 }: TUploadProps) => {
   const [previewSource, setPreviewSource] = useState<string>();
@@ -39,7 +40,8 @@ const Upload = ({
       setPreviewSource(reader.result as string);
     };
   };
-
+  console.log(previewSource);
+  console.log(value);
   return (
     <Box>
       {title && (
@@ -53,7 +55,7 @@ const Upload = ({
         </Typography>
       )}
       <Box>
-        <Box display={'flex'}>
+        <Box display={'flex'} mb={1}>
           <input
             type='file'
             ref={uploadInputRef}
@@ -82,10 +84,42 @@ const Upload = ({
                     border: '1px solid #aaaaaa',
                   },
                 }}>
-                <img src={previewSource} className='thumbnail' />
+                <img
+                  src={previewSource || (value as string)}
+                  className='thumbnail'
+                />
               </Box>
               <HighlightOffIcon
-                onClick={() => setPreviewSource(undefined)}
+                onClick={() => {
+                  setPreviewSource(undefined);
+                  onClearValue?.();
+                }}
+                sx={{
+                  fontSize: 28,
+                  cursor: 'pointer',
+                  ':hover': {
+                    color: '#757575',
+                  },
+                }}
+              />
+            </>
+          )}
+          {(value as string)?.length > 0 && (
+            <>
+              <Box
+                sx={{
+                  '.thumbnail': {
+                    width: 200,
+                    mr: 1,
+                    border: '1px solid #aaaaaa',
+                  },
+                }}>
+                <img src={value as string} className='thumbnail' />
+              </Box>
+              <HighlightOffIcon
+                onClick={() => {
+                  onClearValue?.();
+                }}
                 sx={{
                   fontSize: 28,
                   cursor: 'pointer',
@@ -100,7 +134,7 @@ const Upload = ({
         {helperText && (
           <Typography
             component={'span'}
-            sx={{ color: 'red', ml: 1 }}
+            sx={{ color: 'red', ml: 1.7, fontSize: 12 }}
             className='MuiFormHelperText-root'>
             {helperText}
           </Typography>

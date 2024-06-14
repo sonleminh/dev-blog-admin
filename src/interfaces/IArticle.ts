@@ -3,6 +3,7 @@ export interface IArticle {
     title: string;
     summary: string;
     content: string;
+    tag:string;
     id_category: string;
     thumbnail_image: string
 }
