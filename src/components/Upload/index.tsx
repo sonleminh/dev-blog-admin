@@ -40,8 +40,6 @@ const Upload = ({
       setPreviewSource(reader.result as string);
     };
   };
-  console.log(previewSource);
-  console.log(value);
   return (
     <Box>
       {title && (

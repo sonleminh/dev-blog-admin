@@ -5,12 +5,16 @@ import {
   useMutation,
   useQuery,
 } from '@tanstack/react-query';
-import { getRequest, postRequest } from '../axios';
+import { deleteRequest, getRequest, postRequest } from '../axios';
 import { IArticle, ICreateArticle } from '../../interfaces/IArticle';
 import { createFormData } from '@/utils/createFormdata';
 
 type TArticlesRes = {
   articleList: IArticle[];
+};
+
+type TArticlesDeleteRes = {
+  deleteCount: number;
 };
 
 type ArticleMutateOptions = Omit<
@@ -65,3 +69,15 @@ export const useCreateArticle = (options: ArticleMutateOptions) => {
     mutationFn: createArticle,
   });
 };
+
+// const deleteArticle = async () => {
+//   const result = await deleteRequest(`${articleUrl}`);
+//   return result.data;
+// };
+
+// export const useDeleteArticle = (options: ArticleMutateOptions) => {
+//   return useMutation({
+//     ...options,
+//     mutationFn: deleteArticle,
+//   });
+// };
