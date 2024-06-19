@@ -70,14 +70,13 @@ export const useCreateArticle = (options: ArticleMutateOptions) => {
   });
 };
 
-// const deleteArticle = async () => {
-//   const result = await deleteRequest(`${articleUrl}`);
-//   return result.data;
-// };
+const deleteArticle = async (id: string) => {
+  const result = await deleteRequest(`${articleUrl}/${id}`);
+  return result.data;
+};
 
-// export const useDeleteArticle = (options: ArticleMutateOptions) => {
-//   return useMutation({
-//     ...options,
-//     mutationFn: deleteArticle,
-//   });
-// };
+export const useDeleteArticle = () => {
+  return useMutation({
+    mutationFn: deleteArticle,
+  });
+};

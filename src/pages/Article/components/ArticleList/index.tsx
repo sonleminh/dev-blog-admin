@@ -2,6 +2,7 @@ import { AddCircleOutlined, Edit, Delete } from '@mui/icons-material';
 
 import {
   Box,
+  Button,
   Card,
   CardHeader,
   Divider,
@@ -16,13 +17,23 @@ import {
 import { useNavigate } from 'react-router-dom';
 import ActionButton from '../../../../components/ActionButton';
 import ButtonWithTooltip from '../../../../components/ButtonWithTooltip';
-import { useGetArticleList } from '../../../../services/article';
+import {
+  useDeleteArticle,
+  useGetArticleList,
+} from '../../../../services/article';
 import useConfirmModal from '@/hooks/useModalConfirm';
 
 const ArticleList = () => {
   const navigate = useNavigate();
   const { data } = useGetArticleList();
+
   const { confirmModal, showConfirmModal } = useConfirmModal();
+
+  const { mutate: deleteArticleMutate } = useDeleteArticle();
+
+  const handleDeleteArticle = (id: string) => {
+    deleteArticleMutate(id, { onSuccess: (data) => console.log(data) });
+  };
 
   return (
     <Card sx={{ mt: 3, borderRadius: 2 }}>
@@ -93,7 +104,7 @@ const ArticleList = () => {
                             showConfirmModal({
                               title: 'Bạn có muốn xóa bài viết này không?',
                               cancelText: 'Hủy bỏ',
-                              onOk: () => deleteNewsMutate(row._id),
+                              onOk: () => handleDeleteArticle(item?._id),
                             });
                           }}
                           variant='outlined'
