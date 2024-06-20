@@ -1,15 +1,19 @@
 import { Alert, AlertColor, Snackbar } from '@mui/material';
-import { ReactNode, createContext, useState } from 'react';
+import { ReactNode, createContext, useContext, useState } from 'react';
 
 interface INotificationContext {
   showNotification: (message: ReactNode, severity?: AlertColor) => void;
 }
 
-const NotificateContext = createContext<INotificationContext | undefined>(
+const NotificationContext = createContext<INotificationContext | undefined>(
   undefined
 );
 
-export const NotificatioContextnProvider: FC = ({ children }) => {
+export const NotificationContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [message, setMessage] = useState<ReactNode>('');
   const [severity, setSeverity] = useState<AlertColor>('success');
   const [open, isOpen] = useState(false);
@@ -22,16 +26,22 @@ export const NotificatioContextnProvider: FC = ({ children }) => {
     setMessage(message);
     setSeverity(severity);
   };
+
   return (
-    <NotificateContext.Provider value={{ showNotification }}>
+    <NotificationContext.Provider value={{ showNotification }}>
       {children}
       {open && (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert severity={severity} variant='filled'>
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          onClose={() => isOpen(false)}>
+          <Alert variant='filled' severity={severity}>
             {message}
           </Alert>
         </Snackbar>
       )}
-    </NotificateContext.Provider>
+    </NotificationContext.Provider>
   );
 };
+
+export const useNotificationContext = () => useContext(NotificationContext);
