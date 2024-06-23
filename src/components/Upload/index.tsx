@@ -15,7 +15,6 @@ const Upload = ({
   disabled,
   value,
   onChange,
-  onClearValue,
   helperText,
 }: TUploadProps) => {
   const [previewSource, setPreviewSource] = useState<string>();
@@ -77,7 +76,8 @@ const Upload = ({
               <Box
                 sx={{
                   '.thumbnail': {
-                    width: 200,
+                    width: '100%',
+                    maxHeight: 120,
                     mr: 1,
                     border: '1px solid #aaaaaa',
                   },
@@ -87,7 +87,7 @@ const Upload = ({
                   className='thumbnail'
                 />
               </Box>
-              <HighlightOffIcon
+              {/* <HighlightOffIcon
                 onClick={() => {
                   setPreviewSource(undefined);
                   onClearValue?.();
@@ -99,7 +99,7 @@ const Upload = ({
                     color: '#757575',
                   },
                 }}
-              />
+              /> */}
             </>
           )}
           {(value as string)?.length > 0 && (
@@ -107,14 +107,15 @@ const Upload = ({
               <Box
                 sx={{
                   '.thumbnail': {
-                    width: 200,
+                    width: '100%',
+                    maxHeight: 120,
                     mr: 1,
                     border: '1px solid #aaaaaa',
                   },
                 }}>
                 <img src={value as string} className='thumbnail' />
               </Box>
-              <HighlightOffIcon
+              {/* <HighlightOffIcon
                 onClick={() => {
                   onClearValue?.();
                 }}
@@ -125,7 +126,7 @@ const Upload = ({
                     color: '#757575',
                   },
                 }}
-              />
+              /> */}
             </>
           )}
         </Box>

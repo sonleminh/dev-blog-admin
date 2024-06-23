@@ -4,13 +4,21 @@ export interface IArticle {
     summary: string;
     content: string;
     tag:string;
-    id_category: string;
     thumbnail_image: string
 }
 
-export interface ICreateArticle extends Record<string, unknown> {
+export interface ICreateArticle extends Record<string, unknown>  {
     title: string;
     summary: string;
     content: string;
-    id_category: string;
 }
+
+export interface IUpdateArticlePayload {
+    _id: string;
+    title: string;
+    tag: string;
+    summary: string;
+    content: string;
+    thumbnail_image?: File;
+  }
+  

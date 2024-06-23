@@ -1,38 +1,35 @@
 // Get articles list
 
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { deleteRequest, getRequest, patchRequest, postRequest } from '../axios';
 import {
-  UseMutationOptions,
-  useMutation,
-  useQuery,
-} from '@tanstack/react-query';
-import { deleteRequest, getRequest, postRequest } from '../axios';
-import { IArticle, ICreateArticle } from '../../interfaces/IArticle';
+  IArticle,
+  ICreateArticle,
+  IUpdateArticlePayload,
+} from '../../interfaces/IArticle';
 import { createFormData } from '@/utils/createFormdata';
+import { QueryKeys } from '@/constants/query-key';
+import { IQuery } from '@/interfaces/IQuery';
+import queryString from 'query-string';
 
 type TArticlesRes = {
   articleList: IArticle[];
+  total: number;
 };
-
-type TArticlesDeleteRes = {
-  deleteCount: number;
-};
-
-type ArticleMutateOptions = Omit<
-  UseMutationOptions<IArticle, Error, ICreateArticle, unknown>,
-  'mutationFn'
->;
 
 const articleUrl = '/article';
 
-const getArticleList = async () => {
-  const result = await getRequest(`${articleUrl}`);
+const getArticleList = async (query: IQuery) => {
+  const newParams = { ...query };
+  const queryParams = queryString.stringify(newParams ?? {});
+  const result = await getRequest(`${articleUrl}?${queryParams}`);
   return result.data as TArticlesRes;
 };
 
-export const useGetArticleList = () => {
+export const useGetArticleList = (query: IQuery) => {
   return useQuery({
-    queryKey: ['article'],
-    queryFn: getArticleList,
+    queryKey: [QueryKeys.ARTICLE, query],
+    queryFn: () => getArticleList(query),
     refetchOnWindowFocus: false,
     refetchInterval: false,
   });
@@ -63,10 +60,28 @@ const createArticle = async (payload: ICreateArticle) => {
   return result.data as IArticle;
 };
 
-export const useCreateArticle = (options: ArticleMutateOptions) => {
+export const useCreateArticle = () => {
   return useMutation({
-    ...options,
     mutationFn: createArticle,
+  });
+};
+
+// Update
+
+const updateArticle = async (payload: IUpdateArticlePayload) => {
+  const { _id, ...rest } = payload;
+  const formData = createFormData(rest);
+  const result = await patchRequest(`${articleUrl}/${_id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return result.data as IArticle;
+};
+
+export const useUpdateArticle = () => {
+  return useMutation({
+    mutationFn: updateArticle,
   });
 };
 

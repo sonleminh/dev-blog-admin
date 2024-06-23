@@ -18,8 +18,8 @@ const Sidebar = () => {
       icon: <ArticleIcon />,
     },
     {
-      link: '/category',
-      label: 'Danh mục',
+      link: '/tag',
+      label: 'Tag',
       icon: <ListAltIcon />,
     },
   ];

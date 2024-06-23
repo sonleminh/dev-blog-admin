@@ -1,3 +1,4 @@
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LockIcon from '@mui/icons-material/Lock';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import {
@@ -20,7 +21,6 @@ const schema = yup.object({
     .max(50, 'Không được quá 50 ký tự!'),
   password: yup.string().required('Trường này không được để trống!'),
 });
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);

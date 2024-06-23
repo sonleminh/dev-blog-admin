@@ -19,7 +19,7 @@ const Loader =
 const SignIn = Loader(lazy(() => import('../pages/SignIn')));
 const Dashboard = Loader(lazy(() => import('../pages/Dashboard')));
 const Article = Loader(lazy(() => import('../pages/Article')));
-const Category = Loader(lazy(() => import('../pages/Category')));
+const Tag = Loader(lazy(() => import('../pages/Tag')));
 
 const routes = [
   {
@@ -55,8 +55,8 @@ const routes = [
             element: <Article />,
           },
           {
-            path: 'category/*',
-            element: <Category />,
+            path: 'tag/*',
+            element: <Tag />,
           },
         ],
       },

@@ -28,7 +28,7 @@ import { QueryKeys } from '@/constants/query-key';
 import { useState } from 'react';
 import { IQuery } from '@/interfaces/IQuery';
 
-const ArticleList = () => {
+const TagList = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -73,7 +73,7 @@ const ArticleList = () => {
           }
           title={
             <Typography sx={{ fontSize: 20, fontWeight: 500 }}>
-              Danh sách bài viết
+              Danh sách tag
             </Typography>
           }
         />
@@ -171,4 +171,4 @@ const ArticleList = () => {
   );
 };
 
-export default ArticleList;
+export default TagList;

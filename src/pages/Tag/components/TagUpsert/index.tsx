@@ -26,7 +26,7 @@ import { QueryKeys } from '@/constants/query-key';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 
-const ArticleUpsert = () => {
+const TagUpsert = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -53,7 +53,6 @@ const ArticleUpsert = () => {
     validationSchema: isEdit ? updateSchema : createSchema,
     validateOnChange: false,
     onSubmit(values) {
-      console.log(values);
       if (isEdit) {
         const payload = {
           title: values.title,
@@ -106,6 +105,7 @@ const ArticleUpsert = () => {
     const { name, value } = e.target;
     formik.setFieldValue(name, value);
   };
+  console.log(formik.values.thumbnail_image);
   return (
     <Card sx={{ mt: 3, borderRadius: 2 }}>
       <CardHeader
@@ -215,7 +215,7 @@ const ArticleUpsert = () => {
   );
 };
 
-export default ArticleUpsert;
+export default TagUpsert;
 
 const helperTextStyle: SxProps<Theme> = {
   color: 'red',

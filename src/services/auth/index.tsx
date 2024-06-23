@@ -5,6 +5,7 @@ import { useAuthContext } from '../../contexts/AuthContext';
 import { ISignInResponse, IUser } from '../../interfaces/IUser';
 import { ISignInPayload } from '../../interfaces/ISignIn';
 import Cookies from 'js-cookie';
+import { useNotificationContext } from '@/contexts/NotificationContext';
 
 const authUrl = '/auth';
 
@@ -16,6 +17,8 @@ const signInApi = async (payload: ISignInPayload) => {
 export const useSignInMutate = () => {
   const navigate = useNavigate();
   const auth = useAuthContext();
+  const { showNotification } = useNotificationContext();
+
   return useMutation({
     mutationKey: ['user'],
     mutationFn: signInApi,
@@ -23,8 +26,8 @@ export const useSignInMutate = () => {
       const { accessToken, ...user } = data.user;
       auth?.signIn(user);
       Cookies.set('ACCESS_TOKEN', accessToken);
+      showNotification('Đăng nhập thành công', 'success');
       navigate('/dashboard');
-      // const {accessToken, ...user} = data
     },
   });
 };
