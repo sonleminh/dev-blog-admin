@@ -17,16 +17,15 @@ import {
 import { useNavigate } from 'react-router-dom';
 import ActionButton from '../../../../components/ActionButton';
 import ButtonWithTooltip from '../../../../components/ButtonWithTooltip';
-import {
-  useDeleteArticle,
-  useGetArticleList,
-} from '../../../../services/article';
+import { useDeleteArticle } from '../../../../services/article';
 import useConfirmModal from '@/hooks/useModalConfirm';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '@/constants/query-key';
 import { useState } from 'react';
 import { IQuery } from '@/interfaces/IQuery';
+import { useGetTagList } from '@/services/tag';
+import moment from 'moment';
 
 const TagList = () => {
   const queryClient = useQueryClient();
@@ -37,7 +36,7 @@ const TagList = () => {
     page: 1,
   });
 
-  const { data } = useGetArticleList({ ...query });
+  const { data } = useGetTagList();
 
   const { showNotification } = useNotificationContext();
 
@@ -84,31 +83,20 @@ const TagList = () => {
               <TableRow>
                 <TableCell align='center'>STT</TableCell>
                 <TableCell>Tiêu đề</TableCell>
-                <TableCell align='center'>Ảnh</TableCell>
                 <TableCell>Nội dung</TableCell>
-                <TableCell>Ngày đăng</TableCell>
+                <TableCell>Ngày tạo</TableCell>
                 <TableCell align='center'>Hành động</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data?.articleList?.map((item, index) => (
+              {data?.tags?.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell align='center'>{index + 1}</TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell align='center'>
-                    <Box
-                      sx={{
-                        '.thumbnail': {
-                          width: 100,
-                          height: 100,
-                          objectFit: 'contain',
-                        },
-                      }}>
-                      <img src={item.thumbnail_image} className='thumbnail' />
-                    </Box>
+                  <TableCell>{item.value}</TableCell>
+                  <TableCell>{item.label}</TableCell>
+                  <TableCell>
+                    {moment(item.createdAt).format('DD/MM/YYYY')}
                   </TableCell>
-                  <TableCell>1</TableCell>
-                  <TableCell>12/21/2021</TableCell>
                   <TableCell align='center'>
                     <ActionButton>
                       <Box mb={1}>

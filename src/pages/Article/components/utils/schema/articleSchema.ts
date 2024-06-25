@@ -23,11 +23,11 @@ export const updateSchema = yup.object({
     , tag: yup.string().required('Nội dung này không được để trống!')
     , summary: yup.string().required('Nội dung này không được để trống!')
     , content: yup.string().required('Nội dung này không được để trống!')
-    // , thumbnail_image: yup.mixed().test('fileFormat', 'Chọn file ảnh hợp lệ jpg/jpeg/png', (value)=> {
-    //     if (value) {
-    //         const file = value as FileWithMimeType;
-    //         return ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].includes(file.type);
-    //     }
-    //     return true;
-    // })
+    , thumbnail_image: yup.mixed().test('fileFormat', 'Chọn file ảnh hợp lệ jpg/jpeg/png', (value)=> {
+        if (value) {
+            const file = value as FileWithMimeType;
+            return ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'].includes(file.type);
+        }
+        return true;
+    })
 })

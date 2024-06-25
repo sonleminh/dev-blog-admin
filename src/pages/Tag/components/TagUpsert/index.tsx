@@ -25,6 +25,7 @@ import { createSchema, updateSchema } from '../utils/schema/articleSchema';
 import { QueryKeys } from '@/constants/query-key';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useCreateTag } from '@/services/tag';
 
 const TagUpsert = () => {
   const { id } = useParams();
@@ -36,51 +37,42 @@ const TagUpsert = () => {
 
   const { data: articleData } = useGetArticleById(id as string);
 
-  const { mutate: createArticleMutate, isPending: isCreatePending } =
-    useCreateArticle();
+  const { mutate: createTag, isPending: isCreatePending } = useCreateTag();
   const { mutate: updateArticleMutate, isPending: isUpdatePending } =
     useUpdateArticle();
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      tag: '',
-      summary: '',
-      content: '',
-      thumbnail_image: undefined,
-      thumbnail_image_edit: undefined,
+      value: '',
+      label: '',
     },
-    validationSchema: isEdit ? updateSchema : createSchema,
+    // validationSchema: isEdit ? updateSchema : createSchema,
     validateOnChange: false,
     onSubmit(values) {
       if (isEdit) {
-        const payload = {
-          title: values.title,
-          tag: values.tag,
-          summary: values.summary,
-          content: values.content,
-          thumbnail_image: values.thumbnail_image,
-        };
-        if (!((payload.thumbnail_image as unknown) instanceof File)) {
-          delete payload.thumbnail_image;
-        }
-        console.log(payload);
-        updateArticleMutate(
-          { _id: id, ...payload },
-          {
-            onSuccess() {
-              queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
-              showNotification('Cập nhật bài viết thành công', 'success');
-              navigate('/article');
-            },
-          }
-        );
+        // const payload = {
+        //   title: values.label,
+        // };
+        // // if (!((payload.thumbnail_image as unknown) instanceof File)) {
+        // //   delete payload.thumbnail_image;
+        // // }
+        // // console.log(payload);
+        // updateArticleMutate(
+        //   { _id: id, ...payload },
+        //   {
+        //     onSuccess() {
+        //       queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
+        //       showNotification('Cập nhật bài viết thành công', 'success');
+        //       navigate('/article');
+        //     },
+        //   }
+        // );
       } else {
-        createArticleMutate(values, {
+        createTag(values, {
           onSuccess() {
-            queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
-            showNotification('Tạo bài viết thành công', 'success');
-            navigate('/article');
+            queryClient.invalidateQueries({ queryKey: [QueryKeys.TAG] });
+            showNotification('Tạo tag thành công', 'success');
+            navigate('/tag');
           },
         });
       }
@@ -105,7 +97,6 @@ const TagUpsert = () => {
     const { name, value } = e.target;
     formik.setFieldValue(name, value);
   };
-  console.log(formik.values.thumbnail_image);
   return (
     <Card sx={{ mt: 3, borderRadius: 2 }}>
       <CardHeader
@@ -116,93 +107,41 @@ const TagUpsert = () => {
         }
       />
       <Divider />
-
       <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <FormControl>
           <Input
-            id='title'
-            label='Tiêu đề'
-            name='title'
+            id='value'
+            label='Value'
+            name='value'
             variant='filled'
             required
             helperText={
               <Box component={'span'} sx={helperTextStyle}>
-                {formik.errors.title}
+                {formik.errors.value}
               </Box>
             }
-            value={formik?.values.title}
+            value={formik?.values.value}
             onChange={handleChangeValue}
           />
         </FormControl>
         <FormControl>
           <Input
-            id='tag'
-            label='Tag'
-            name='tag'
+            id='label'
+            label='Label'
+            name='label'
             variant='filled'
             required
             helperText={
               <Box component={'span'} sx={helperTextStyle}>
-                {formik.errors.tag}
+                {formik.errors.label}
               </Box>
             }
-            value={formik?.values.tag}
+            value={formik?.values.label}
             onChange={handleChangeValue}
-          />
-        </FormControl>
-        <FormControl>
-          <Input
-            id='summary'
-            label='Tóm tắt'
-            name='summary'
-            variant='filled'
-            required
-            helperText={
-              <Box component={'span'} sx={helperTextStyle}>
-                {formik.errors.summary}
-              </Box>
-            }
-            value={formik?.values.summary}
-            onChange={handleChangeValue}
-          />
-        </FormControl>
-        <FormControl>
-          <Input
-            id='content'
-            label='Nội dung'
-            name='content'
-            variant='filled'
-            required
-            helperText={
-              <Box component={'span'} sx={helperTextStyle}>
-                {formik.errors.content}
-              </Box>
-            }
-            value={formik?.values.content}
-            onChange={handleChangeValue}
-          />
-        </FormControl>
-        <FormControl>
-          <Upload
-            title={'Ảnh'}
-            required
-            helperText={
-              <Box component={'span'} sx={helperTextStyle}>
-                {formik.errors.thumbnail_image}
-              </Box>
-            }
-            value={
-              formik?.values.thumbnail_image
-              // ??              formik.values.thumbnail_image_edit
-            }
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              formik.setFieldValue('thumbnail_image', e.target.files?.[0]);
-            }}
-            // onClearValue={() => formik.setFieldValue('thumbnail_image', null)}
           />
         </FormControl>
         <Box sx={{ textAlign: 'end' }}>
-          <Button onClick={() => navigate('/article')} sx={{ mr: 2 }}>
+          <Button onClick={() => navigate('/tag')} sx={{ mr: 2 }}>
             Trở lại
           </Button>
           <Button variant='contained' onClick={() => formik.handleSubmit()}>
