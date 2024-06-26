@@ -25,7 +25,7 @@ import { createSchema, updateSchema } from '../utils/schema/articleSchema';
 import { QueryKeys } from '@/constants/query-key';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { useCreateTag } from '@/services/tag';
+import { useCreateTag, useGetTagById, useUpdateTag } from '@/services/tag';
 
 const TagUpsert = () => {
   const { id } = useParams();
@@ -35,11 +35,11 @@ const TagUpsert = () => {
 
   const isEdit = !!id;
 
-  const { data: articleData } = useGetArticleById(id as string);
+  const { data: tagData } = useGetTagById(id as string);
 
   const { mutate: createTag, isPending: isCreatePending } = useCreateTag();
-  const { mutate: updateArticleMutate, isPending: isUpdatePending } =
-    useUpdateArticle();
+  const { mutate: updateTagMutate, isPending: isUpdatePending } =
+    useUpdateTag();
 
   const formik = useFormik({
     initialValues: {
@@ -49,24 +49,21 @@ const TagUpsert = () => {
     // validationSchema: isEdit ? updateSchema : createSchema,
     validateOnChange: false,
     onSubmit(values) {
+      console.log(values);
       if (isEdit) {
-        // const payload = {
-        //   title: values.label,
-        // };
-        // // if (!((payload.thumbnail_image as unknown) instanceof File)) {
-        // //   delete payload.thumbnail_image;
-        // // }
-        // // console.log(payload);
-        // updateArticleMutate(
-        //   { _id: id, ...payload },
-        //   {
-        //     onSuccess() {
-        //       queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
-        //       showNotification('Cập nhật bài viết thành công', 'success');
-        //       navigate('/article');
-        //     },
-        //   }
-        // );
+        const payload = {
+          label: values.label,
+        };
+        updateTagMutate(
+          { _id: id, ...payload },
+          {
+            onSuccess() {
+              queryClient.invalidateQueries({ queryKey: [QueryKeys.TAG] });
+              showNotification('Cập nhật tag thành công', 'success');
+              navigate('/tag');
+            },
+          }
+        );
       } else {
         createTag(values, {
           onSuccess() {
@@ -80,18 +77,11 @@ const TagUpsert = () => {
   });
 
   useEffect(() => {
-    if (articleData) {
-      formik.setFieldValue('title', articleData?.title);
-      formik.setFieldValue('tag', articleData?.tag);
-      formik.setFieldValue('summary', articleData?.summary);
-      formik.setFieldValue('content', articleData?.content);
-      formik.setFieldValue('thumbnail_image', articleData?.thumbnail_image);
-      // formik.setFieldValue(
-      //   'thumbnail_image_edit',
-      //   articleData?.thumbnail_image
-      // );
+    if (tagData) {
+      formik.setFieldValue('value', tagData?.value);
+      formik.setFieldValue('label', tagData?.label);
     }
-  }, [articleData]);
+  }, [tagData]);
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -115,6 +105,7 @@ const TagUpsert = () => {
             name='value'
             variant='filled'
             required
+            disabled={isEdit ?? false}
             helperText={
               <Box component={'span'} sx={helperTextStyle}>
                 {formik.errors.value}

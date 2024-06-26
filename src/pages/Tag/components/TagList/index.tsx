@@ -24,7 +24,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '@/constants/query-key';
 import { useState } from 'react';
 import { IQuery } from '@/interfaces/IQuery';
-import { useGetTagList } from '@/services/tag';
+import { useDeleteTag, useGetTagList } from '@/services/tag';
 import moment from 'moment';
 
 const TagList = () => {
@@ -42,18 +42,18 @@ const TagList = () => {
 
   const { confirmModal, showConfirmModal } = useConfirmModal();
 
-  const { mutate: deleteArticleMutate } = useDeleteArticle();
+  const { mutate: deleteTagMutate } = useDeleteTag();
 
   const handleChangeQuery = (object: Partial<IQuery>) => {
     setQuery((prev) => ({ ...prev, ...object }));
   };
 
-  const handleDeleteArticle = (id: string) => {
+  const handleDeleteTag = (id: string) => {
     showNotification('Ok', 'error');
-    deleteArticleMutate(id, {
+    deleteTagMutate(id, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
-        showNotification('Xóa bài viết thành công', 'success');
+        showNotification('Xóa tag thành công', 'success');
       },
     });
   };
@@ -82,8 +82,8 @@ const TagList = () => {
             <TableHead>
               <TableRow>
                 <TableCell align='center'>STT</TableCell>
-                <TableCell>Tiêu đề</TableCell>
-                <TableCell>Nội dung</TableCell>
+                <TableCell>Value</TableCell>
+                <TableCell>Label</TableCell>
                 <TableCell>Ngày tạo</TableCell>
                 <TableCell align='center'>Hành động</TableCell>
               </TableRow>
@@ -114,9 +114,9 @@ const TagList = () => {
                           color='error'
                           onClick={() => {
                             showConfirmModal({
-                              title: 'Bạn có muốn xóa bài viết này không?',
+                              title: 'Bạn có muốn xóa tag này không?',
                               cancelText: 'Hủy bỏ',
-                              onOk: () => handleDeleteArticle(item?._id),
+                              onOk: () => handleDeleteTag(item?._id),
                             });
                           }}
                           variant='outlined'

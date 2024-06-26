@@ -24,12 +24,23 @@ export const useGetTagList = () => {
   });
 };
 
-const createTag = async (payload: ICreateTag) => {
-  const result = await postRequest(`${tagUrl}`, payload, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
+const getTagById = async (id: string) => {
+  const result = await getRequest(`${tagUrl}/${id}`);
+  return result.data as ITag;
+};
+
+export const useGetTagById = (id: string) => {
+  return useQuery({
+    queryKey: [QueryKeys.TAG, id],
+    queryFn: () => getTagById(id),
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    enabled: !!id,
   });
+};
+
+const createTag = async (payload: ICreateTag) => {
+  const result = await postRequest(`${tagUrl}`, payload);
   return result.data as ITag;
 };
 
@@ -43,11 +54,7 @@ export const useCreateTag = () => {
 
 const updateTag = async (payload: IUpdateTagPayload) => {
   const { _id, ...rest } = payload;
-  const result = await patchRequest(`${tagUrl}/${_id}`, rest, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const result = await patchRequest(`${tagUrl}/${_id}`, rest);
   return result.data as ITag;
 };
 

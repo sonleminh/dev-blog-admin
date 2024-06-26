@@ -13,6 +13,6 @@ export interface ICreateTag extends Record<string, unknown>  {
 
 export interface IUpdateTagPayload {
     _id: string;
-   label: string;
+    label: string;
   }
   
