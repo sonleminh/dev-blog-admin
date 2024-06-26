@@ -6,7 +6,7 @@ interface FileWithMimeType {
 
 export const createSchema = yup.object({
     title: yup.string().required('Nội dung này không được để trống!').max(490, 'Không được vượt quá 490 ký tự!')
-    , tag: yup.string().required('Nội dung này không được để trống!')
+    , tag: yup.array().min(1).required('Nội dung này không được để trống!')
     , summary: yup.string().required('Nội dung này không được để trống!')
     , content: yup.string().required('Nội dung này không được để trống!')
     , thumbnail_image: yup.mixed().required('Nội dung này không được để trống!').test('fileFormat', 'Chọn file ảnh hợp lệ jpg/jpeg/png', (value)=> {
@@ -20,7 +20,7 @@ export const createSchema = yup.object({
 
 export const updateSchema = yup.object({
     title: yup.string().required('Nội dung này không được để trống!').max(490, 'Không được vượt quá 490 ký tự!')
-    , tag: yup.string().required('Nội dung này không được để trống!')
+    , tag: yup.array().min(1).required('Nội dung này không được để trống!')
     , summary: yup.string().required('Nội dung này không được để trống!')
     , content: yup.string().required('Nội dung này không được để trống!')
     , thumbnail_image: yup.mixed().test('fileFormat', 'Chọn file ảnh hợp lệ jpg/jpeg/png', (value)=> {

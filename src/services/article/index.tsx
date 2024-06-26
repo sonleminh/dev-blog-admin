@@ -17,7 +17,24 @@ type TArticlesRes = {
   total: number;
 };
 
+type TInitDataRes = {
+  tags?: { value: string; label: string }[];
+};
 const articleUrl = '/article';
+
+const getArticleInitial = async () => {
+  const result = await getRequest(`${articleUrl}/get-article-initial`);
+  return result.data as TInitDataRes;
+};
+
+export const useGetArticleInitial = () => {
+  return useQuery({
+    queryKey: [QueryKeys.ARTICLE],
+    queryFn: () => getArticleInitial(),
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  });
+};
 
 const getArticleList = async (query: IQuery) => {
   const newParams = { ...query };

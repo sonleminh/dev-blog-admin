@@ -3,12 +3,13 @@ export interface IArticle {
     title: string;
     summary: string;
     content: string;
-    tag:string;
+    tags:string[];
     thumbnail_image: string
 }
 
 export interface ICreateArticle extends Record<string, unknown>  {
     title: string;
+    tags: string[];
     summary: string;
     content: string;
 }
@@ -16,7 +17,7 @@ export interface ICreateArticle extends Record<string, unknown>  {
 export interface IUpdateArticlePayload {
     _id: string;
     title: string;
-    tag: string;
+    tags: string[];
     summary: string;
     content: string;
     thumbnail_image?: File;

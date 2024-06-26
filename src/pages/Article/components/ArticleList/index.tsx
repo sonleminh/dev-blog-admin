@@ -33,7 +33,7 @@ const ArticleList = () => {
   const navigate = useNavigate();
 
   const [query, setQuery] = useState<IQuery>({
-    limit: 3,
+    limit: 10,
     page: 1,
   });
 
