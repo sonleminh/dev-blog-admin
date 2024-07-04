@@ -32,6 +32,7 @@ import { createSchema, updateSchema } from '../utils/schema/articleSchema';
 import { QueryKeys } from '@/constants/query-key';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useNotificationContext } from '@/contexts/NotificationContext';
+import { CKEditor } from '@/components/CKEditor/indext';
 
 export interface IListOptions {
   value: string;
@@ -232,6 +233,9 @@ const ArticleUpsert = () => {
             value={formik?.values.summary}
             onChange={handleChangeValue}
           />
+        </FormControl>
+        <FormControl>
+          <CKEditor />
         </FormControl>
         <FormControl>
           <Input
