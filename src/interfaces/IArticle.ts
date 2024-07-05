@@ -4,7 +4,8 @@ export interface IArticle {
     summary: string;
     content: string;
     tags:string[];
-    thumbnail_image: string
+    thumbnail_image: string;
+    createdAt: string;
 }
 
 export interface ICreateArticle extends Record<string, unknown>  {

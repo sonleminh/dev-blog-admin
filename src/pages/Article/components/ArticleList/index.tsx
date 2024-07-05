@@ -27,6 +27,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { QueryKeys } from '@/constants/query-key';
 import { useState } from 'react';
 import { IQuery } from '@/interfaces/IQuery';
+import moment from 'moment';
 
 const ArticleList = () => {
   const queryClient = useQueryClient();
@@ -85,7 +86,7 @@ const ArticleList = () => {
                 <TableCell align='center'>STT</TableCell>
                 <TableCell>Tiêu đề</TableCell>
                 <TableCell align='center'>Ảnh</TableCell>
-                <TableCell>Nội dung</TableCell>
+                <TableCell>Tóm tắt</TableCell>
                 <TableCell>Ngày đăng</TableCell>
                 <TableCell align='center'>Hành động</TableCell>
               </TableRow>
@@ -107,8 +108,10 @@ const ArticleList = () => {
                       <img src={item.thumbnail_image} className='thumbnail' />
                     </Box>
                   </TableCell>
-                  <TableCell>1</TableCell>
-                  <TableCell>12/21/2021</TableCell>
+                  <TableCell>{item.summary}</TableCell>
+                  <TableCell>
+                    {moment(item.createdAt).format('DD/MM/YYYY')}
+                  </TableCell>
                   <TableCell align='center'>
                     <ActionButton>
                       <Box mb={1}>

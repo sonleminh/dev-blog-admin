@@ -32,7 +32,7 @@ import { createSchema, updateSchema } from '../utils/schema/articleSchema';
 import { QueryKeys } from '@/constants/query-key';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useNotificationContext } from '@/contexts/NotificationContext';
-import { CKEditor } from '@/components/CKEditor/indext';
+import { CKEditor } from '@/components/CKEditor';
 
 export interface IListOptions {
   value: string;
@@ -48,10 +48,7 @@ const ArticleUpsert = () => {
   const isEdit = !!id;
 
   const { data: initData } = useGetArticleInitial();
-  const { data: articleData, isFetching: isFetchingInitData } =
-    useGetArticleById(id as string);
-
-  // const INIT_TAGS = initData?.tags;
+  const { data: articleData } = useGetArticleById(id as string);
 
   const [tags, setTags] = useState<IListOptions[]>([]);
 
@@ -68,7 +65,7 @@ const ArticleUpsert = () => {
       thumbnail_image: undefined,
       thumbnail_image_edit: undefined,
     },
-    // validationSchema: isEdit ? updateSchema : createSchema,
+    validationSchema: isEdit ? updateSchema : createSchema,
     validateOnChange: false,
     onSubmit(values) {
       const payload = {
@@ -107,7 +104,6 @@ const ArticleUpsert = () => {
       return tag.label;
     }
   }
-
   useEffect(() => {
     if (articleData) {
       formik.setFieldValue('title', articleData?.title);
@@ -140,12 +136,6 @@ const ArticleUpsert = () => {
     }
   }, [articleData, initData]);
 
-  // useLayoutEffect(() => {
-  //   if (formik.values.tag === '' && initData && !isFetchingInitData) {
-  //     formik.setFieldValue('tag', initData?.tags?.[0]);
-  //   }
-  // }, [initData, isFetchingInitData, formik.values.tag]);
-
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     formik.setFieldValue(name, value);
@@ -155,7 +145,6 @@ const ArticleUpsert = () => {
     setTags(val);
     formik.setFieldValue('tag', val);
   };
-
   return (
     <Card sx={{ mt: 3, borderRadius: 2 }}>
       <CardHeader
@@ -235,22 +224,10 @@ const ArticleUpsert = () => {
           />
         </FormControl>
         <FormControl>
-          <CKEditor />
-        </FormControl>
-        <FormControl>
-          <Input
-            id='content'
-            label='Nội dung'
-            name='content'
-            variant='filled'
-            required
-            helperText={
-              <Box component={'span'} sx={helperTextStyle}>
-                {formik.errors.content}
-              </Box>
-            }
-            value={formik?.values.content}
-            onChange={handleChangeValue}
+          <CKEditor
+            onChange={(value) => formik.setFieldValue('content', value)}
+            value={formik.values.content ?? ''}
+            helperText={formik.errors?.content}
           />
         </FormControl>
         <FormControl>
