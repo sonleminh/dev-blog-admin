@@ -67,7 +67,7 @@ export const useGetArticleById = (id: string) => {
   });
 };
 
-const createArticle = async (payload: ICreateArticle) => {
+const createArticle = async (payload: any) => {
   const formData = createFormData(payload);
   const result = await postRequest(`${articleUrl}`, formData, {
     headers: {
@@ -85,7 +85,7 @@ export const useCreateArticle = () => {
 
 // Update
 
-const updateArticle = async (payload: IUpdateArticlePayload) => {
+const updateArticle = async (payload: any) => {
   const { _id, ...rest } = payload;
   const formData = createFormData(rest);
   const result = await patchRequest(`${articleUrl}/${_id}`, formData, {

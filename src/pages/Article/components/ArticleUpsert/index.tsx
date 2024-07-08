@@ -65,16 +65,22 @@ const ArticleUpsert = () => {
       thumbnail_image: undefined,
       thumbnail_image_edit: undefined,
     },
-    validationSchema: isEdit ? updateSchema : createSchema,
+    // validationSchema: isEdit ? updateSchema : createSchema,
     validateOnChange: false,
     onSubmit(values) {
       const payload = {
         title: values.title,
-        tags: tags.map((item) => item?.value),
+        // tags: tags.map((item) => item?.value),
+        tags: [
+          { value: 'database', label: 'Database' },
+          { value: 'frontend', label: 'Front-end' },
+        ],
+        // tags: ['database', 'frontend'],
         summary: values.summary,
         content: values.content,
         thumbnail_image: values.thumbnail_image,
       };
+      console.log(payload);
       if (isEdit) {
         updateArticleMutate(
           { _id: id, ...payload },
