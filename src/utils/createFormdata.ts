@@ -7,6 +7,9 @@ export const createFormData = (payload: Record<string, unknown>) => {
         if (value instanceof File) {
           formData.append(key, value);
         }
+        if(key === 'tags') {
+          formData.append('tags', JSON.stringify(value));
+        }
         else {
           if (value !== undefined) formData.append(key, String(value));
         }

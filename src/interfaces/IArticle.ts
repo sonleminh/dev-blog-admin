@@ -1,9 +1,14 @@
+export interface ITagOptions {
+    value: string;
+    label: string;
+}
+
 export interface IArticle {
     _id: string;
     title: string;
     summary: string;
     content: string;
-    tags:string[];
+    tags: ITagOptions[];
     thumbnail_image: string;
     createdAt: string;
 }
@@ -22,5 +27,5 @@ export interface IUpdateArticlePayload {
     summary: string;
     content: string;
     thumbnail_image?: File;
-  }
+}
   

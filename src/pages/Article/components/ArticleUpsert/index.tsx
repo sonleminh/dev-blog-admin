@@ -33,11 +33,7 @@ import { QueryKeys } from '@/constants/query-key';
 import SuspenseLoader from '@/components/SuspenseLoader';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { CKEditor } from '@/components/CKEditor';
-
-export interface IListOptions {
-  value: string;
-  label: string;
-}
+import { ITagOptions } from '@/interfaces/IArticle';
 
 const ArticleUpsert = () => {
   const { id } = useParams();
@@ -50,8 +46,7 @@ const ArticleUpsert = () => {
   const { data: initData } = useGetArticleInitial();
   const { data: articleData } = useGetArticleById(id as string);
 
-  const [tags, setTags] = useState<IListOptions[]>([]);
-
+  const [tags, setTags] = useState<ITagOptions[]>([]);
   const { mutate: createArticleMutate, isPending: isCreatePending } =
     useCreateArticle();
   const { mutate: updateArticleMutate, isPending: isUpdatePending } =
@@ -70,17 +65,11 @@ const ArticleUpsert = () => {
     onSubmit(values) {
       const payload = {
         title: values.title,
-        // tags: tags.map((item) => item?.value),
-        tags: [
-          { value: 'database', label: 'Database' },
-          { value: 'frontend', label: 'Front-end' },
-        ],
-        // tags: ['database', 'frontend'],
+        tags: tags,
         summary: values.summary,
         content: values.content,
         thumbnail_image: values.thumbnail_image,
       };
-      console.log(payload);
       if (isEdit) {
         updateArticleMutate(
           { _id: id, ...payload },
@@ -104,7 +93,7 @@ const ArticleUpsert = () => {
     },
   });
 
-  function getLabelByValue(initData: IListOptions[], value: string) {
+  function getLabelByValue(initData: ITagOptions[], value: string) {
     const tag = initData.find((tag) => tag.value === value);
     if (tag) {
       return tag.label;
@@ -120,25 +109,7 @@ const ArticleUpsert = () => {
         'thumbnail_image_edit',
         articleData?.thumbnail_image
       );
-      // formik.setFieldValue(
-      //   'thumbnail_image_edit',
-      //   articleData?.thumbnail_image
-      // );
-
-      if (articleData && initData) {
-        const types: IListOptions[] = [];
-        articleData?.tags?.forEach((tagData: string) => {
-          if (
-            initData?.tags?.find((tag: IListOptions) => tag.value === tagData)
-          ) {
-            types.push({
-              value: tagData,
-              label: getLabelByValue(initData?.tags, tagData)!,
-            });
-          }
-        });
-        setTags(types);
-      }
+      setTags(articleData?.tags);
     }
   }, [articleData, initData]);
 
@@ -147,7 +118,7 @@ const ArticleUpsert = () => {
     formik.setFieldValue(name, value);
   };
 
-  const handlePlanTypeChange = (_, val: IListOptions[]) => {
+  const handlePlanTypeChange = (_, val: ITagOptions[]) => {
     setTags(val);
     formik.setFieldValue('tag', val);
   };

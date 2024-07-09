@@ -28,6 +28,7 @@ import { QueryKeys } from '@/constants/query-key';
 import { useState } from 'react';
 import { IQuery } from '@/interfaces/IQuery';
 import moment from 'moment';
+import { truncateTextByLine } from '@/utils/css-helper.util';
 
 const ArticleList = () => {
   const queryClient = useQueryClient();
@@ -84,7 +85,7 @@ const ArticleList = () => {
             <TableHead>
               <TableRow>
                 <TableCell align='center'>STT</TableCell>
-                <TableCell>Tiêu đề</TableCell>
+                <TableCell align='center'>Tiêu đề</TableCell>
                 <TableCell align='center'>Ảnh</TableCell>
                 <TableCell>Tóm tắt</TableCell>
                 <TableCell>Ngày đăng</TableCell>
@@ -95,7 +96,11 @@ const ArticleList = () => {
               {data?.articleList?.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell align='center'>{index + 1}</TableCell>
-                  <TableCell>{item.title}</TableCell>
+                  <TableCell sx={{ width: '30%' }}>
+                    <Typography sx={{ ...truncateTextByLine(2) }}>
+                      {item.title}
+                    </Typography>
+                  </TableCell>
                   <TableCell align='center'>
                     <Box
                       sx={{
