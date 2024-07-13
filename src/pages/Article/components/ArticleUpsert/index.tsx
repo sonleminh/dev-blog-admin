@@ -34,6 +34,7 @@ import SuspenseLoader from '@/components/SuspenseLoader';
 import { useNotificationContext } from '@/contexts/NotificationContext';
 import { CKEditor } from '@/components/CKEditor';
 import { ITagOptions } from '@/interfaces/IArticle';
+import Editor from '@/components/Editor';
 
 const ArticleUpsert = () => {
   const { id } = useParams();
@@ -93,12 +94,6 @@ const ArticleUpsert = () => {
     },
   });
 
-  function getLabelByValue(initData: ITagOptions[], value: string) {
-    const tag = initData.find((tag) => tag.value === value);
-    if (tag) {
-      return tag.label;
-    }
-  }
   useEffect(() => {
     if (articleData) {
       formik.setFieldValue('title', articleData?.title);
@@ -201,11 +196,12 @@ const ArticleUpsert = () => {
           />
         </FormControl>
         <FormControl>
-          <CKEditor
+          {/* <CKEditor
             onChange={(value) => formik.setFieldValue('content', value)}
             value={formik.values.content ?? ''}
             helperText={formik.errors?.content}
-          />
+          /> */}
+          <Editor />
         </FormControl>
         <FormControl>
           <Upload
