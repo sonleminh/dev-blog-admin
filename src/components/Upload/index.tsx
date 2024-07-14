@@ -1,7 +1,6 @@
-import { Box, Button, TextFieldProps, Typography } from '@mui/material';
 import { ChangeEvent, ReactNode, useRef, useState } from 'react';
+import { Box, Button, TextFieldProps, Typography } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 type TUploadProps = {
   title?: ReactNode;
@@ -21,9 +20,6 @@ const Upload = ({
 
   const uploadInputRef = useRef<HTMLInputElement>(null);
 
-  //   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
-  //     onChange?.(e);
-  //   };
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange?.(e);
     const file = e.target.files ? e.target.files[0] : null;

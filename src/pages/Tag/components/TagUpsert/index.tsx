@@ -1,3 +1,15 @@
+import { ChangeEvent, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import SuspenseLoader from '@/components/SuspenseLoader';
+import Input from '@/components/Input';
+
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useCreateTag, useGetTagById, useUpdateTag } from '@/services/tag';
+import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from '@/constants/query-key';
+import { useFormik } from 'formik';
+
 import {
   Box,
   Button,
@@ -10,22 +22,6 @@ import {
   Theme,
   Typography,
 } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
-import Upload from '@/components/Upload';
-import Input from '@/components/Input';
-import { ChangeEvent, useEffect } from 'react';
-import { useFormik } from 'formik';
-import {
-  useCreateArticle,
-  useGetArticleById,
-  useUpdateArticle,
-} from '@/services/article';
-import { useQueryClient } from '@tanstack/react-query';
-import { createSchema, updateSchema } from '../utils/schema/articleSchema';
-import { QueryKeys } from '@/constants/query-key';
-import SuspenseLoader from '@/components/SuspenseLoader';
-import { useNotificationContext } from '@/contexts/NotificationContext';
-import { useCreateTag, useGetTagById, useUpdateTag } from '@/services/tag';
 
 const TagUpsert = () => {
   const { id } = useParams();
@@ -49,7 +45,6 @@ const TagUpsert = () => {
     // validationSchema: isEdit ? updateSchema : createSchema,
     validateOnChange: false,
     onSubmit(values) {
-      console.log(values);
       if (isEdit) {
         const payload = {
           label: values.label,

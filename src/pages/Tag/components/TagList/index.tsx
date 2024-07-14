@@ -1,4 +1,17 @@
-import { AddCircleOutlined, Edit, Delete } from '@mui/icons-material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import ActionButton from '../../../../components/ActionButton';
+import ButtonWithTooltip from '../../../../components/ButtonWithTooltip';
+
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import useConfirmModal from '@/hooks/useModalConfirm';
+
+import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from '@/constants/query-key';
+import { IQuery } from '@/interfaces/IQuery';
+import { useDeleteTag, useGetTagList } from '@/services/tag';
+import moment from 'moment';
 
 import {
   Box,
@@ -14,18 +27,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import ActionButton from '../../../../components/ActionButton';
-import ButtonWithTooltip from '../../../../components/ButtonWithTooltip';
-import { useDeleteArticle } from '../../../../services/article';
-import useConfirmModal from '@/hooks/useModalConfirm';
-import { useNotificationContext } from '@/contexts/NotificationContext';
-import { useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/constants/query-key';
-import { useState } from 'react';
-import { IQuery } from '@/interfaces/IQuery';
-import { useDeleteTag, useGetTagList } from '@/services/tag';
-import moment from 'moment';
+import { AddCircleOutlined, Edit, Delete } from '@mui/icons-material';
 
 const TagList = () => {
   const queryClient = useQueryClient();
@@ -145,7 +147,7 @@ const TagList = () => {
           <Pagination
             count={Math.ceil((data?.total ?? 0) / query.limit!)}
             page={query.page ?? 0}
-            onChange={(e, newPage) => {
+            onChange={(_: React.ChangeEvent<unknown>, newPage) => {
               handleChangeQuery({ page: newPage });
             }}
             defaultPage={query.page ?? 0}

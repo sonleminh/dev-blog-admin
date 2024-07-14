@@ -1,16 +1,14 @@
-// Get articles list
-
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { deleteRequest, getRequest, patchRequest, postRequest } from '../axios';
-import {
-  IArticle,
-  ICreateArticle,
-  IUpdateArticlePayload,
-} from '../../interfaces/IArticle';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { createFormData } from '@/utils/createFormdata';
 import { QueryKeys } from '@/constants/query-key';
 import { IQuery } from '@/interfaces/IQuery';
 import queryString from 'query-string';
+import {
+  IArticle,
+  ICreateArticle,
+  IUpdateArticlePayload,
+} from '@/interfaces/IArticle';
 
 type TArticlesRes = {
   articleList: IArticle[];
@@ -67,7 +65,7 @@ export const useGetArticleById = (id: string) => {
   });
 };
 
-const createArticle = async (payload: any) => {
+const createArticle = async (payload: ICreateArticle) => {
   const formData = createFormData(payload);
   const result = await postRequest(`${articleUrl}`, formData, {
     headers: {
@@ -85,7 +83,7 @@ export const useCreateArticle = () => {
 
 // Update
 
-const updateArticle = async (payload: any) => {
+const updateArticle = async (payload: IUpdateArticlePayload) => {
   const { _id, ...rest } = payload;
   const formData = createFormData(rest);
   const result = await patchRequest(`${articleUrl}/${_id}`, formData, {

@@ -11,7 +11,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^42.0.0",
     "@ckeditor/ckeditor5-react": "^8.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -20,6 +19,7 @@
     "@tanstack/react-query": "^5.40.1",
     "@tanstack/react-query-devtools": "^5.40.1",
     "axios": "^1.7.2",
+    "ckeditor5": "^42.0.1",
     "dotenv": "^16.4.5",
     "formik": "^2.4.6",
     "js-cookie": "^3.0.5",

@@ -1,3 +1,23 @@
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import SuspenseLoader from '@/components/SuspenseLoader';
+import CKEditor from '@/components/CKEditor';
+import Upload from '@/components/Upload';
+import Input from '@/components/Input';
+
+import { useNotificationContext } from '@/contexts/NotificationContext';
+import { useQueryClient } from '@tanstack/react-query';
+import { ITagOptions } from '@/interfaces/IArticle';
+import { QueryKeys } from '@/constants/query-key';
+import {
+  useCreateArticle,
+  useGetArticleById,
+  useGetArticleInitial,
+  useUpdateArticle,
+} from '@/services/article';
+import { useFormik } from 'formik';
+
 import {
   Autocomplete,
   Box,
@@ -5,36 +25,15 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Checkbox,
   Divider,
   FormControl,
   FormHelperText,
-  MenuItem,
-  Select,
   SxProps,
   TextField,
   Theme,
   Typography,
 } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
-import Upload from '@/components/Upload';
-import Input from '@/components/Input';
-import { ChangeEvent, useEffect, useLayoutEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import {
-  useCreateArticle,
-  useGetArticleById,
-  useGetArticleInitial,
-  useUpdateArticle,
-} from '@/services/article';
-import { useQueryClient } from '@tanstack/react-query';
 import { createSchema, updateSchema } from '../utils/schema/articleSchema';
-import { QueryKeys } from '@/constants/query-key';
-import SuspenseLoader from '@/components/SuspenseLoader';
-import { useNotificationContext } from '@/contexts/NotificationContext';
-import { CKEditor } from '@/components/CKEditor';
-import { ITagOptions } from '@/interfaces/IArticle';
-import Editor from '@/components/Editor';
 
 const ArticleUpsert = () => {
   const { id } = useParams();
@@ -71,26 +70,27 @@ const ArticleUpsert = () => {
         content: values.content,
         thumbnail_image: values.thumbnail_image,
       };
-      if (isEdit) {
-        updateArticleMutate(
-          { _id: id, ...payload },
-          {
-            onSuccess() {
-              queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
-              showNotification('Cập nhật bài viết thành công', 'success');
-              navigate('/article');
-            },
-          }
-        );
-      } else {
-        createArticleMutate(payload, {
-          onSuccess() {
-            queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
-            showNotification('Tạo bài viết thành công', 'success');
-            navigate('/article');
-          },
-        });
-      }
+      console.log(payload);
+      // if (isEdit) {
+      //   updateArticleMutate(
+      //     { _id: id, ...payload },
+      //     {
+      //       onSuccess() {
+      //         queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
+      //         showNotification('Cập nhật bài viết thành công', 'success');
+      //         navigate('/article');
+      //       },
+      //     }
+      //   );
+      // } else {
+      //   createArticleMutate(payload, {
+      //     onSuccess() {
+      //       queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
+      //       showNotification('Tạo bài viết thành công', 'success');
+      //       navigate('/article');
+      //     },
+      //   });
+      // }
     },
   });
 
@@ -113,7 +113,10 @@ const ArticleUpsert = () => {
     formik.setFieldValue(name, value);
   };
 
-  const handlePlanTypeChange = (_, val: ITagOptions[]) => {
+  const handlePlanTypeChange = (
+    _: React.ChangeEvent<unknown>,
+    val: ITagOptions[]
+  ) => {
     setTags(val);
     formik.setFieldValue('tag', val);
   };
@@ -196,12 +199,11 @@ const ArticleUpsert = () => {
           />
         </FormControl>
         <FormControl>
-          {/* <CKEditor
-            onChange={(value) => formik.setFieldValue('content', value)}
+          <CKEditor
+            onChange={(value: string) => formik.setFieldValue('content', value)}
             value={formik.values.content ?? ''}
-            helperText={formik.errors?.content}
-          /> */}
-          <Editor />
+            // helperText={formik.errors?.content}
+          />
         </FormControl>
         <FormControl>
           <Upload
