@@ -40,17 +40,18 @@ const ArticleUpsert = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { showNotification } = useNotificationContext();
+  const [tags, setTags] = useState<ITagOptions[]>([]);
 
   const isEdit = !!id;
 
   const { data: initData } = useGetArticleInitial();
   const { data: articleData } = useGetArticleById(id as string);
 
-  const [tags, setTags] = useState<ITagOptions[]>([]);
   const { mutate: createArticleMutate, isPending: isCreatePending } =
     useCreateArticle();
   const { mutate: updateArticleMutate, isPending: isUpdatePending } =
     useUpdateArticle();
+
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -60,7 +61,7 @@ const ArticleUpsert = () => {
       thumbnail_image: undefined,
       thumbnail_image_edit: undefined,
     },
-    // validationSchema: isEdit ? updateSchema : createSchema,
+    validationSchema: isEdit ? updateSchema : createSchema,
     validateOnChange: false,
     onSubmit(values) {
       const payload = {
@@ -70,27 +71,26 @@ const ArticleUpsert = () => {
         content: values.content,
         thumbnail_image: values.thumbnail_image,
       };
-      console.log(payload);
-      // if (isEdit) {
-      //   updateArticleMutate(
-      //     { _id: id, ...payload },
-      //     {
-      //       onSuccess() {
-      //         queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
-      //         showNotification('Cập nhật bài viết thành công', 'success');
-      //         navigate('/article');
-      //       },
-      //     }
-      //   );
-      // } else {
-      //   createArticleMutate(payload, {
-      //     onSuccess() {
-      //       queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
-      //       showNotification('Tạo bài viết thành công', 'success');
-      //       navigate('/article');
-      //     },
-      //   });
-      // }
+      if (isEdit) {
+        updateArticleMutate(
+          { _id: id, ...payload },
+          {
+            onSuccess() {
+              queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
+              showNotification('Cập nhật bài viết thành công', 'success');
+              navigate('/article');
+            },
+          }
+        );
+      } else {
+        createArticleMutate(payload, {
+          onSuccess() {
+            queryClient.invalidateQueries({ queryKey: [QueryKeys.ARTICLE] });
+            showNotification('Tạo bài viết thành công', 'success');
+            navigate('/article');
+          },
+        });
+      }
     },
   });
 
@@ -118,7 +118,7 @@ const ArticleUpsert = () => {
     val: ITagOptions[]
   ) => {
     setTags(val);
-    formik.setFieldValue('tag', val);
+    formik.setFieldValue('tags', val);
   };
   return (
     <Card sx={{ mt: 3, borderRadius: 2 }}>
@@ -150,12 +150,12 @@ const ArticleUpsert = () => {
         </FormControl>
         <FormControl>
           <Autocomplete
-            value={tags}
             multiple
             fullWidth
             id='checkboxes-tags-demo'
             options={initData?.tags ?? []}
             disableCloseOnSelect
+            value={tags}
             onChange={(e, val) => handlePlanTypeChange(e, val)}
             isOptionEqualToValue={(option, value) =>
               option?.value === value?.value
@@ -176,8 +176,8 @@ const ArticleUpsert = () => {
             )}
             size='small'
           />
-          <FormHelperText sx={{ mt: { xs: 0.5 }, ml: 0 }}>
-            <Box component={'span'} sx={{ color: 'red' }}>
+          <FormHelperText>
+            <Box component={'span'} sx={helperTextStyle}>
               {formik.errors?.tags}
             </Box>
           </FormHelperText>
@@ -202,7 +202,7 @@ const ArticleUpsert = () => {
           <CKEditor
             onChange={(value: string) => formik.setFieldValue('content', value)}
             value={formik.values.content ?? ''}
-            // helperText={formik.errors?.content}
+            helperText={formik?.errors?.content}
           />
         </FormControl>
         <FormControl>
@@ -221,7 +221,6 @@ const ArticleUpsert = () => {
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               formik.setFieldValue('thumbnail_image', e.target.files?.[0]);
             }}
-            // onClearValue={() => formik.setFieldValue('thumbnail_image', null)}
           />
         </FormControl>
         <Box sx={{ textAlign: 'end' }}>

@@ -138,8 +138,9 @@ const ArticleList = () => {
                           onClick={() => {
                             showConfirmModal({
                               title: 'Bạn có muốn xóa bài viết này không?',
-                              cancelText: 'Hủy bỏ',
+                              cancelText: 'Hủy',
                               onOk: () => handleDeleteArticle(item?._id),
+                              okText: 'Xóa',
                             });
                           }}
                           variant='outlined'

@@ -1,7 +1,5 @@
-import { Cancel } from '@mui/icons-material';
-import { Box, Button, Modal, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box, Button, Modal, Typography } from '@mui/material';
 
 export interface IShowConfirmModal {
   onOk?: () => void;
@@ -62,13 +60,13 @@ const useConfirmModal = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 700,
+            width: 500,
             bgcolor: 'background.paper',
             boxShadow: 24,
-            p: 4,
+            p: 3,
             borderRadius: 2,
           }}>
-          <Typography variant='h3' mb={4}>
+          <Typography sx={{ mb: 3, fontSize: 16 }}>
             {modalProps?.title}
           </Typography>
           <Typography id='modal-modal-description' sx={{ my: 2 }}>
@@ -77,19 +75,18 @@ const useConfirmModal = () => {
           <Box sx={{ textAlign: 'center' }}>
             {modalProps?.showBtnCancel && (
               <Button
-                variant='contained'
-                color='error'
-                sx={{ mr: 2 }}
+                variant='outlined'
+                sx={{ mr: 2, textTransform: 'none' }}
                 onClick={() => modalProps?.onCancel?.()}>
-                {!modalProps.hideIconBtnCancel && <Cancel sx={{ mr: 1 }} />}{' '}
                 {modalProps?.cancelText}
               </Button>
             )}
             {modalProps?.showBtnOk && (
-              <Button variant='contained' onClick={() => modalProps?.onOk?.()}>
-                {!modalProps.hideIconBtnOk && (
-                  <CheckCircleIcon sx={{ mr: 1 }} />
-                )}{' '}
+              <Button
+                variant='contained'
+                color='error'
+                onClick={() => modalProps?.onOk?.()}
+                sx={{ textTransform: 'none' }}>
                 {modalProps?.okText}
               </Button>
             )}

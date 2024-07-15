@@ -66,19 +66,24 @@ import {
 import { Editor } from '@ckeditor/ckeditor5-core';
 
 import { useAdminUploadImage } from '@/services/helper/upload';
-import { Box } from '@mui/material';
+import { Box, FormHelperText } from '@mui/material';
 import 'ckeditor5/ckeditor5.css';
 
 interface ICKEditorProps {
   onChange?: (value: string) => void;
   value?: string;
+  helperText?: string;
 }
 
 interface CustomUploadResponse extends UploadResponse {
   default: string;
 }
 
-export default function CKEditor({ onChange, value }: ICKEditorProps) {
+export default function CKEditor({
+  onChange,
+  value,
+  helperText,
+}: ICKEditorProps) {
   const [isLayoutReady, setIsLayoutReady] = useState(false);
 
   const { mutateAsync } = useAdminUploadImage();
@@ -319,6 +324,11 @@ export default function CKEditor({ onChange, value }: ICKEditorProps) {
           }}
           data={value}
         />
+      )}
+      {helperText && (
+        <FormHelperText sx={{ color: 'red', fontSize: 13 }}>
+          {helperText}
+        </FormHelperText>
       )}
     </Box>
   );
