@@ -7,7 +7,7 @@ import path from "path";
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   // base: '/admin',
-  // server: {port: 3030},
+  server: {port: 3030},
   define: {
     'process.env': {}
   },

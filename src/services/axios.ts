@@ -24,7 +24,7 @@ privateInstance.interceptors.response.use(
     },
     async (error) => {
       if (error.response.data.statusCode === 403) {
-        window.location.href = `/admin/not-found`;
+        window.location.href = `/not-found`;
       }
   
       return Promise.reject(error);
