@@ -28,6 +28,10 @@ const routes = [
     element: <BaseLayout />,
     children: [
       {
+        path: '/',
+        element: <>cc</>,
+      },
+      {
         path: 'signin',
         element: <SignIn />,
       },

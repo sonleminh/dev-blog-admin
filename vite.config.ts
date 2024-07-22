@@ -6,8 +6,8 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
-  base: '/admin',
-  server: {port: 3030},
+  // base: '/admin',
+  // server: {port: 3030},
   define: {
     'process.env': {}
   },
