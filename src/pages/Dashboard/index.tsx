@@ -38,7 +38,7 @@ const Dashboard = () => {
                     <Typography sx={{ mb: 2 }}>
                       Top 5 trang có lượt xem nhiều nhất trong 30 ngày
                     </Typography>
-                    {[1, 2, 3, 4, 5].map((item, index) => (
+                    {[1, 2, 3, 4, 5].map((_, index) => (
                       <Box
                         key={index}
                         component={Link}
